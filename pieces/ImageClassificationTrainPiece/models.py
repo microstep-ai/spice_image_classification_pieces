@@ -43,9 +43,9 @@ class InputModel(BaseModel):
         description="Number of filters for each convolutional layer."
     )
 
-    kernel_sizes: List[int] = Field(
+    kernel_sizes: List[Tuple[int, int]] = Field(
         title="kernel sizes",
-        default=[3, 3, 3],
+        default=[(3,3), (3,3), (3,3)],
         description="Kernel size for each convolutional layer."
     )
 

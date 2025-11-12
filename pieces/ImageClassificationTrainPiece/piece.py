@@ -48,22 +48,22 @@ class ImageClassificationTrainPiece(BasePiece):
         num_classes,
         num_layers,
         filters_per_layer,
-        kernel_size,
+        kernel_sizes,
         dropout_rate,
     ):
         """
-            Builds a generic, parameterized 1D CNN model.
+        Builds a generic, parameterized 1D CNN model.
 
-            Args:
-                input_shape (tuple): Shape of input data (timesteps, features).
-                num_layers (int): Number of convolutional layers.
-                num_classes (int): Number of output classes.
-                filters_per_layer (list): Number of filters for each conv layer.
-                kernel_size (list): Kernel size for each conv layer.
-                dropout_rate (float): Dropout rate.
-            Returns:
-                keras.Model: Compiled Keras 1D CNN model.
-            """
+        Args:
+            input_shape (tuple): Shape of input data (timesteps, features).
+            num_layers (int): Number of convolutional layers.
+            num_classes (int): Number of output classes.
+            filters_per_layer (list): Number of filters for each conv layer.
+            kernel_sizes (list): Kernel size for each conv layer.
+            dropout_rate (float): Dropout rate.
+        Returns:
+            keras.Model: Compiled Keras 1D CNN model.
+        """
 
         model = Sequential(name="Generic2DCNN")
         model.add(Input(shape=input_shape))
@@ -73,7 +73,7 @@ class ImageClassificationTrainPiece(BasePiece):
             for j in range(num_layers):
                 model.add(Conv2D(
                     filters=no_filters,
-                    kernel_size=kernel_size,
+                    kernel_size=kernel_sizes[i],
                     padding='same',
                     name=f'conv_{i + 1}_{j + 1}'
                 ))
@@ -82,18 +82,6 @@ class ImageClassificationTrainPiece(BasePiece):
             model.add(BatchNormalization(name=f'bn_{i + 1}'))
             model.add(ReLU(name=f'relu_{i + 1}'))
             model.add(Dropout(rate=dropout_rate))
-
-        model.add(GlobalAveragePooling2D())
-
-        # Dense head
-        model.add(Dense(num_classes, activation='softmax', name='dense_1'))
-
-        # Compile
-        model.compile(
-            optimizer='adam',
-            loss='sparse_categorical_crossentropy',
-            metrics=['sparse_categorical_accuracy'],
-        )
 
         model.add(GlobalAveragePooling2D())
 
@@ -137,7 +125,7 @@ class ImageClassificationTrainPiece(BasePiece):
             num_classes=num_classes,
             num_layers=input_data.num_layers,
             filters_per_layer=input_data.filters_per_layer,
-            kernel_size=input_data.kernel_size,
+            kernel_sizes=input_data.kernel_sizes,
             dropout_rate=input_data.dropout_rate
         )
 
