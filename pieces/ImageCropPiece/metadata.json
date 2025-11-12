@@ -1,0 +1,8 @@
+{
+  "name": "ImageCropPiece",
+  "description": "Piece to crop an image to a fixed rectangle (left, top, right, bottom).",
+  "dependency": {"dockerfile": "Dockerfile.tensorflow", "requirements_file": "requirements_tensorflow.txt"},
+  "container_resources": {"requests": {"cpu": 100, "memory": 128}, "limits": {"cpu": 500, "memory": 512}},
+  "tags": ["image", "preprocessing", "crop"],
+  "style": {"node_label": "Crop (L,T,R,B)", "icon_class_name": "fa-duotone fa-crop"}
+}

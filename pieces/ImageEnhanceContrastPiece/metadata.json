@@ -1,0 +1,17 @@
+{
+  "name": "ImageEnhanceContrastPiece",
+  "description": "Piece to apply contrast enhancement to a single image and save the result.",
+  "dependency": {
+    "dockerfile": "Dockerfile.tensorflow",
+    "requirements_file": "requirements_tensorflow.txt"
+  },
+  "container_resources": {
+    "requests": {"cpu": 100, "memory": 128},
+    "limits":   {"cpu": 500, "memory": 512}
+  },
+  "tags": ["AI", "image", "preprocessing", "contrast"],
+  "style": {
+    "node_label": "Image Enhance Contrast",
+    "icon_class_name": "fa-duotone fa-solid fa-circle-half-stroke"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "name": "ImageToGrayPiece",
+  "description": "Piece to convert an image to grayscale and save the result.",
+  "dependency": {"dockerfile": "Dockerfile.tensorflow", "requirements_file": "requirements_tensorflow.txt"},
+  "container_resources": {"requests": {"cpu": 100, "memory": 128}, "limits": {"cpu": 500, "memory": 512}},
+  "tags": ["image", "preprocessing", "grayscale"],
+  "style": {"node_label": "Convert to Grayscale", "icon_class_name": "fa-duotone fa-droplet"}
+}

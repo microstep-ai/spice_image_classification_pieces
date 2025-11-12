@@ -1,0 +1,14 @@
+{
+  "name": "ImageOffsetPiece",
+  "description": "Piece to translate an image by integer pixel offsets (dx, dy) and save the result.",
+  "dependency": {
+    "dockerfile": "Dockerfile.tensorflow",
+    "requirements_file": "requirements_tensorflow.txt"
+  },
+  "container_resources": {
+    "requests": {"cpu": 100, "memory": 128},
+    "limits":   {"cpu": 500, "memory": 512}
+  },
+  "tags": ["image", "preprocessing", "translate"],
+  "style": {"node_label": "Offset (dx, dy)", "icon_class_name": "fa-duotone fa-arrows-up-down-left-right"}
+}
