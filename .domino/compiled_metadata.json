@@ -183,25 +183,13 @@
                 },
                 "kernel_sizes": {
                     "default": [
-                        [
-                            3,
-                            3
-                        ],
-                        [
-                            3,
-                            3
-                        ],
-                        [
-                            3,
-                            3
-                        ]
+                        3,
+                        3,
+                        3
                     ],
                     "description": "Kernel size for each convolutional layer.",
                     "items": {
-                        "items": {
-                            "type": "integer"
-                        },
-                        "type": "array"
+                        "type": "integer"
                     },
                     "title": "kernel sizes",
                     "type": "array"
