@@ -63,7 +63,22 @@ jobs:
       - name: Publish images
         env:
           GHCR_USERNAME: ${{ github.actor }}
-        run: domino piece-repository publish-images --registry-token ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # keep-alive loop to prevent GitHub Actions idle timeout
+          while true; do
+            echo "Still pushing images..."
+            sleep 60
+          done &
+          KEEPALIVE_PID=$!
+
+          domino piece-repository publish-images --registry-token ${{ secrets.GITHUB_TOKEN }}
+          
+          EXIT_CODE=$?
+
+          # stop keep-alive
+          kill $KEEPALIVE_PID
+
+          exit $EXIT_CODE
 
       - name: Commit files
         run: |
