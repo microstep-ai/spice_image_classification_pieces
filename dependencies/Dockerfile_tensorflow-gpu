@@ -1,8 +1,5 @@
 FROM ghcr.io/iisas/domino-base-piece:tensorflow-gpu
 
-RUN apt-get update
-RUN apt install net-tools
-
 # Need to copy pieces source code
 COPY config.toml domino/pieces_repository/
 COPY pieces domino/pieces_repository/pieces
