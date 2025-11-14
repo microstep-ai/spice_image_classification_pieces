@@ -54,31 +54,17 @@ jobs:
 #        uses: codecov/codecov-action@v3
 #        env:
 #          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-      - name: Increase Docker timeouts for Python Docker SDK
-        run: |
-          echo "DOCKER_CLIENT_TIMEOUT=600" >> $GITHUB_ENV
-          echo "COMPOSE_HTTP_TIMEOUT=600" >> $GITHUB_ENV
-          echo "DOCKER_HTTP_TIMEOUT=600" >> $GITHUB_ENV
 
       - name: Publish images
         env:
           GHCR_USERNAME: ${{ github.actor }}
         run: |
-          # keep-alive loop to prevent GitHub Actions idle timeout
-          while true; do
-            echo "Still pushing images..."
-            sleep 60
-          done &
-          KEEPALIVE_PID=$!
-
+          echo "DOCKER_CLIENT_TIMEOUT=600" >> $GITHUB_ENV
+          echo "COMPOSE_HTTP_TIMEOUT=600" >> $GITHUB_ENV
+          echo "DOCKER_HTTP_TIMEOUT=600" >> $GITHUB_ENV
+          
           domino piece-repository publish-images --registry-token ${{ secrets.GITHUB_TOKEN }}
           
-          EXIT_CODE=$?
-
-          # stop keep-alive
-          kill $KEEPALIVE_PID
-
-          exit $EXIT_CODE
 
       - name: Commit files
         run: |
