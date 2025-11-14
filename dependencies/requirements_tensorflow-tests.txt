@@ -1,1 +1,1 @@
--r requirements_tensorflow-gpu.txt
+-r requirements_tensorflow.txt
