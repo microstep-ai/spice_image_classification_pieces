@@ -1,0 +1,14 @@
+{
+    "group0": {
+        "dependency": {
+            "dockerfile": "Dockerfile_tensorflow-gpu",
+            "requirements_file": "requirements_tensorflow.txt"
+        },
+        "pieces": [
+            "ImageClassificationInferencePiece",
+            "ImageClassificationTrainPiece"
+        ],
+        "secrets": [],
+        "source_image": "ghcr.io/iisas/spice_image_classification_pieces:0.1.14-group0"
+    }
+}

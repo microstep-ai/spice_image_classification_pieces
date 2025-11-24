@@ -25,10 +25,10 @@ class InputModel(BaseModel):
         default=None,
     )
 
-    image_size: Tuple[int, int] = Field(
+    image_size: List[int] = Field(
         title="image size",
         description="Size of the input image",
-        default=(256, 256)
+        default=[256, 256]
     )
 
     num_layers: int = Field(
@@ -43,9 +43,9 @@ class InputModel(BaseModel):
         description="Number of filters for each convolutional layer."
     )
 
-    kernel_sizes: List[Tuple[int, int]] = Field(
+    kernel_sizes: List[int] = Field(
         title="kernel sizes",
-        default=[(3,3), (3,3), (3,3)],
+        default=[3, 3, 3],
         description="Kernel size for each convolutional layer."
     )
 

@@ -41,13 +41,13 @@ def run_piece(
 @skip_envs('github')
 def test_ImageClassificationTrainPiece():
     piece_kwargs = {
-        'train_data_path': '/home/michal-skalican/Projects/SPICE/spice_domino_pieces/sample_data',
-        'image_size': (256, 256),
+        'train_data_path': '/home/michal-skalican/Projects/SPICE/image_classification_pieces/sample_data',
+        'image_size': [256, 256],
         'validation_data_path': None,
         'validation_split': 0.2,
         'num_layers': 1,
         'filters_per_layer': [64] * 1,
-        'kernel_sizes': [(3,3)] * 1,
+        'kernel_sizes': [3] * 1,
         'batch_size': 32,
         'epochs': 1,
         'early_stopping_patience': 300,
@@ -65,4 +65,4 @@ def test_ImageClassificationTrainPiece():
         piece_kwargs['kernel_sizes']
     ):
         assert layer.filters == filters
-        assert layer.kernel_size == kernel_size
+        assert layer.kernel_size == (kernel_size, kernel_size)

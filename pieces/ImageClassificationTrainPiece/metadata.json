@@ -2,7 +2,7 @@
     "name": "ImageClassificationTrainPiece",
     "description": "Piece for training an image classification model based on a 2D CNN architecture. The model is implemented in Keras.",
     "dependency": {
-        "dockerfile": "Dockerfile.tensorflow",
+        "dockerfile": "Dockerfile_tensorflow-gpu",
         "requirements_file": "requirements_tensorflow.txt"
     },
     "container_resources": {

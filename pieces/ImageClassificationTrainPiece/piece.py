@@ -108,7 +108,10 @@ class ImageClassificationTrainPiece(BasePiece):
 
         if input_data.validation_split:
             train, validation = self._read_image_dataset(
-                input_data.train_data_path, validation_split=0.2, batch_size=input_data.batch_size
+                input_data.train_data_path,
+                validation_split=0.2,
+                batch_size=input_data.batch_size,
+                image_size=tuple(input_data.image_size)
             )
         else:
             train = self._read_image_dataset(input_data.train_data_path, batch_size=input_data.batch_size)

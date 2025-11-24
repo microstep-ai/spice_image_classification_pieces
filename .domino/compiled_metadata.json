@@ -1,0 +1,258 @@
+{
+    "ImageClassificationInferencePiece": {
+        "name": "ImageClassificationInferencePiece",
+        "dependency": {
+            "dockerfile": "Dockerfile_tensorflow-gpu",
+            "requirements_file": "requirements_tensorflow.txt"
+        },
+        "tags": [
+            "AI",
+            "Keras",
+            "Tensorflow",
+            "CNN",
+            "2D",
+            "classification",
+            "images"
+        ],
+        "style": {
+            "node_label": "Image Classification - 2D CNN (Inference)",
+            "node_type": "default",
+            "node_style": {
+                "backgroundColor": "#ebebeb"
+            },
+            "useIcon": true,
+            "icon_class_name": "fa-duotone fa-solid fa-right-to-bracket",
+            "iconStyle": {
+                "cursor": "pointer"
+            }
+        },
+        "description": "Piece for inferencing an image classification model based on a 2D CNN architecture. The model is implemented in Keras.",
+        "container_resources": {
+            "requests": {
+                "cpu": 100,
+                "memory": 128
+            },
+            "limits": {
+                "cpu": 500,
+                "memory": 512
+            }
+        },
+        "input_schema": {
+            "description": "ImageClassificationInferencePiece Input Model",
+            "properties": {
+                "model_path": {
+                    "default": "",
+                    "description": "Path to the saved model.",
+                    "title": "model path",
+                    "type": "string"
+                },
+                "inference_data_path": {
+                    "default": "",
+                    "description": "Path to the inference data.",
+                    "title": "inference data path",
+                    "type": "string"
+                }
+            },
+            "title": "InputModel",
+            "type": "object"
+        },
+        "output_schema": {
+            "description": "ImageClassificationinferencePiece Output Model",
+            "properties": {
+                "classification_results": {
+                    "description": "JSON of the classification results.",
+                    "items": {
+                        "additionalProperties": true,
+                        "type": "object"
+                    },
+                    "title": "Classification Results",
+                    "type": "array"
+                }
+            },
+            "required": [
+                "classification_results"
+            ],
+            "title": "OutputModel",
+            "type": "object"
+        },
+        "secrets_schema": null,
+        "source_url": "https://github.com/IISAS/spice_image_classification_pieces/tree/main/pieces/ImageClassificationInferencePiece"
+    },
+    "ImageClassificationTrainPiece": {
+        "name": "ImageClassificationTrainPiece",
+        "dependency": {
+            "dockerfile": "Dockerfile_tensorflow-gpu",
+            "requirements_file": "requirements_tensorflow.txt"
+        },
+        "tags": [
+            "AI",
+            "Keras",
+            "Tensorflow",
+            "CNN",
+            "2D",
+            "classification",
+            "images"
+        ],
+        "style": {
+            "node_label": "Image Classification - 2D CNN (Train)",
+            "node_type": "default",
+            "node_style": {
+                "backgroundColor": "#ebebeb"
+            },
+            "useIcon": true,
+            "icon_class_name": "fa-duotone fa-solid fa-right-to-bracket",
+            "iconStyle": {
+                "cursor": "pointer"
+            }
+        },
+        "description": "Piece for training an image classification model based on a 2D CNN architecture. The model is implemented in Keras.",
+        "container_resources": {
+            "requests": {
+                "cpu": 100,
+                "memory": 128
+            },
+            "limits": {
+                "cpu": 500,
+                "memory": 512
+            }
+        },
+        "input_schema": {
+            "description": "ImageClassificationTrainPiece Input Model",
+            "properties": {
+                "train_data_path": {
+                    "description": "Path to the train data.",
+                    "title": "train data path",
+                    "type": "string"
+                },
+                "validation_data_path": {
+                    "anyOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "Path to the validation data if validation data is pre-split",
+                    "title": "validation data path"
+                },
+                "validation_split": {
+                    "anyOf": [
+                        {
+                            "type": "number"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "Percentage of data to be used for validation if validation data is to be split.",
+                    "title": "validation split"
+                },
+                "image_size": {
+                    "default": [
+                        256,
+                        256
+                    ],
+                    "description": "Size of the input image",
+                    "items": {
+                        "type": "integer"
+                    },
+                    "title": "image size",
+                    "type": "array"
+                },
+                "num_layers": {
+                    "default": 3,
+                    "description": "Number of convolutional layers.",
+                    "title": "number of layers",
+                    "type": "integer"
+                },
+                "filters_per_layer": {
+                    "default": [
+                        64,
+                        64,
+                        64
+                    ],
+                    "description": "Number of filters for each convolutional layer.",
+                    "items": {
+                        "type": "integer"
+                    },
+                    "title": "number of filters",
+                    "type": "array"
+                },
+                "kernel_sizes": {
+                    "default": [
+                        3,
+                        3,
+                        3
+                    ],
+                    "description": "Kernel size for each convolutional layer.",
+                    "items": {
+                        "type": "integer"
+                    },
+                    "title": "kernel sizes",
+                    "type": "array"
+                },
+                "batch_size": {
+                    "default": 32,
+                    "description": "Batch size.",
+                    "title": "batch size",
+                    "type": "integer"
+                },
+                "epochs": {
+                    "default": 500,
+                    "description": "Number of epochs.",
+                    "title": "epochs",
+                    "type": "integer"
+                },
+                "early_stop_patience": {
+                    "default": 500,
+                    "description": "Number of epochs with no improvement before stopping the training.",
+                    "title": "patience",
+                    "type": "integer"
+                },
+                "dropout_rate": {
+                    "default": 0,
+                    "description": "Dropout rate.",
+                    "title": "dropout rate",
+                    "type": "number"
+                }
+            },
+            "required": [
+                "train_data_path"
+            ],
+            "title": "InputModel",
+            "type": "object"
+        },
+        "output_schema": {
+            "description": "ImageClassificationTrainPiece Output Model",
+            "properties": {
+                "best_model_file_path": {
+                    "description": "Path to the saved best model.",
+                    "title": "Best Model File Path",
+                    "type": "string"
+                },
+                "last_model_file_path": {
+                    "description": "Path to the saved last model.",
+                    "title": "Last Model File Path",
+                    "type": "string"
+                },
+                "config_path": {
+                    "description": "Path to the saved config.",
+                    "title": "Config Path",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "best_model_file_path",
+                "last_model_file_path",
+                "config_path"
+            ],
+            "title": "OutputModel",
+            "type": "object"
+        },
+        "secrets_schema": null,
+        "source_url": "https://github.com/IISAS/spice_image_classification_pieces/tree/main/pieces/ImageClassificationTrainPiece"
+    }
+}
