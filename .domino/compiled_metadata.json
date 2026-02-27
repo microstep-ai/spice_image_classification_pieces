@@ -1,6 +1,6 @@
 {
-    "ImageRotatePiece": {
-        "name": "ImageRotatePiece",
+    "ImageCropPiece": {
+        "name": "ImageCropPiece",
         "dependency": {
             "dockerfile": "Dockerfile",
             "requirements_file": null
@@ -8,21 +8,21 @@
         "tags": [
             "image",
             "preprocessing",
-            "rotate"
+            "crop"
         ],
         "style": {
-            "node_label": "Rotate (0/90/180/270)",
+            "node_label": "Crop (L,T,R,B)",
             "node_type": "default",
             "node_style": {
                 "backgroundColor": "#ebebeb"
             },
             "useIcon": true,
-            "icon_class_name": "fa-duotone fa-rotate",
+            "icon_class_name": "fa-duotone fa-crop",
             "iconStyle": {
                 "cursor": "pointer"
             }
         },
-        "description": "Piece to rotate an image by a discrete angle (0, 90, 180, 270) and save the result.",
+        "description": "Piece to crop an image to a fixed rectangle (left, top, right, bottom).",
         "container_resources": {
             "requests": {
                 "cpu": 100,
@@ -41,182 +41,116 @@
                     "type": "string"
                 },
                 "output_image_path": {
-                    "description": "Folder where to save the enhanced image(s).",
-                    "title": "Output folder path",
+                    "description": "Where to save the enhanced image(s) (parent folders are created if missing).",
+                    "title": "Output image path",
                     "type": "string"
                 },
-                "rotation": {
+                "left": {
+                    "description": "Left coordinate (pixels) of the crop box (PIL format).",
+                    "title": "Left",
+                    "type": "integer"
+                },
+                "top": {
+                    "description": "Top coordinate (pixels) of the crop box (PIL format).",
+                    "title": "Top",
+                    "type": "integer"
+                },
+                "right": {
+                    "description": "Right coordinate (pixels, exclusive) of the crop box (PIL format).",
+                    "title": "Right",
+                    "type": "integer"
+                },
+                "bottom": {
+                    "description": "Bottom coordinate (pixels, exclusive) of the crop box (PIL format).",
+                    "title": "Bottom",
+                    "type": "integer"
+                }
+            },
+            "required": [
+                "input_image_path",
+                "output_image_path",
+                "left",
+                "top",
+                "right",
+                "bottom"
+            ],
+            "title": "InputModel",
+            "type": "object"
+        },
+        "output_schema": {
+            "properties": {
+                "output_image_path": {
+                    "description": "Path to the saved output image.",
+                    "title": "Output image path",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "output_image_path"
+            ],
+            "title": "OutputModel",
+            "type": "object"
+        },
+        "secrets_schema": null,
+        "source_url": "https://github.com/IISAS/spice_image_classification_pieces/tree/main/pieces/ImageCropPiece"
+    },
+    "ImageOffsetPiece": {
+        "name": "ImageOffsetPiece",
+        "dependency": {
+            "dockerfile": "Dockerfile",
+            "requirements_file": null
+        },
+        "tags": [
+            "image",
+            "preprocessing",
+            "translate"
+        ],
+        "style": {
+            "node_label": "Offset (dx, dy)",
+            "node_type": "default",
+            "node_style": {
+                "backgroundColor": "#ebebeb"
+            },
+            "useIcon": true,
+            "icon_class_name": "fa-duotone fa-arrows-up-down-left-right",
+            "iconStyle": {
+                "cursor": "pointer"
+            }
+        },
+        "description": "Piece to translate an image by integer pixel offsets (dx, dy) and save the result.",
+        "container_resources": {
+            "requests": {
+                "cpu": 100,
+                "memory": 128
+            },
+            "limits": {
+                "cpu": 500,
+                "memory": 512
+            }
+        },
+        "input_schema": {
+            "properties": {
+                "input_image_path": {
+                    "description": "Path to the source image file or folder of images on disk.",
+                    "title": "Input image path",
+                    "type": "string"
+                },
+                "output_image_path": {
+                    "description": "Where to save the enhanced image(s) (parent folders are created if missing).",
+                    "title": "Output image path",
+                    "type": "string"
+                },
+                "dx": {
                     "default": 0,
-                    "description": "Rotation angle in degrees; must be one of 0, 90, 180, 270 (counter-clockwise).",
-                    "items": {
-                        "enum": [
-                            0,
-                            90,
-                            180,
-                            270
-                        ],
-                        "type": "integer"
-                    },
-                    "title": "Rotation (degrees)",
-                    "type": "array"
-                }
-            },
-            "required": [
-                "input_image_path",
-                "output_image_path"
-            ],
-            "title": "InputModel",
-            "type": "object"
-        },
-        "output_schema": {
-            "properties": {
-                "output_image_path": {
-                    "description": "Path to the folder with saved output image(s).",
-                    "title": "Output folder path",
-                    "type": "string"
-                }
-            },
-            "required": [
-                "output_image_path"
-            ],
-            "title": "OutputModel",
-            "type": "object"
-        },
-        "secrets_schema": null,
-        "source_url": "https://github.com/IISAS/spice_image_classification_pieces/tree/main/pieces/ImageRotatePiece"
-    },
-    "ImageClassificationInferencePiece": {
-        "name": "ImageClassificationInferencePiece",
-        "dependency": {
-            "dockerfile": "Dockerfile.tensorflow-gpu",
-            "requirements_file": null
-        },
-        "tags": [
-            "AI",
-            "Keras",
-            "Tensorflow",
-            "CNN",
-            "2D",
-            "classification",
-            "images"
-        ],
-        "style": {
-            "node_label": "Image Classification - 2D CNN (Inference)",
-            "node_type": "default",
-            "node_style": {
-                "backgroundColor": "#ebebeb"
-            },
-            "useIcon": true,
-            "icon_class_name": "fa-duotone fa-solid fa-right-to-bracket",
-            "iconStyle": {
-                "cursor": "pointer"
-            }
-        },
-        "description": "Piece for inferencing an image classification model based on a 2D CNN architecture. The model is implemented in Keras.",
-        "container_resources": {
-            "requests": {
-                "cpu": 100,
-                "memory": 128
-            },
-            "limits": {
-                "cpu": 500,
-                "memory": 512
-            },
-            "use_gpu": true
-        },
-        "input_schema": {
-            "description": "ImageClassificationInferencePiece Input Model",
-            "properties": {
-                "saved_model_path": {
-                    "default": "",
-                    "description": "Path to the saved model directory.",
-                    "title": "saved model path",
-                    "type": "string"
+                    "description": "Horizontal translation in pixels; positive moves right, negative moves left.",
+                    "title": "Offset X (pixels)",
+                    "type": "integer"
                 },
-                "inference_data_path": {
-                    "default": "",
-                    "description": "Path to the inference data.",
-                    "title": "inference data path",
-                    "type": "string"
-                }
-            },
-            "title": "InputModel",
-            "type": "object"
-        },
-        "output_schema": {
-            "description": "ImageClassificationinferencePiece Output Model",
-            "properties": {
-                "classification_results": {
-                    "description": "JSON of the classification results.",
-                    "items": {
-                        "additionalProperties": true,
-                        "type": "object"
-                    },
-                    "title": "Classification Results",
-                    "type": "array"
-                }
-            },
-            "required": [
-                "classification_results"
-            ],
-            "title": "OutputModel",
-            "type": "object"
-        },
-        "secrets_schema": null,
-        "source_url": "https://github.com/IISAS/spice_image_classification_pieces/tree/main/pieces/ImageClassificationInferencePiece"
-    },
-    "ImageEnhanceContrastPiece": {
-        "name": "ImageEnhanceContrastPiece",
-        "dependency": {
-            "dockerfile": "Dockerfile",
-            "requirements_file": null
-        },
-        "tags": [
-            "AI",
-            "image",
-            "preprocessing",
-            "contrast"
-        ],
-        "style": {
-            "node_label": "Image Enhance Contrast",
-            "node_type": "default",
-            "node_style": {
-                "backgroundColor": "#ebebeb"
-            },
-            "useIcon": true,
-            "icon_class_name": "fa-duotone fa-solid fa-circle-half-stroke",
-            "iconStyle": {
-                "cursor": "pointer"
-            }
-        },
-        "description": "Piece to apply contrast enhancement to a single image and save the result.",
-        "container_resources": {
-            "requests": {
-                "cpu": 100,
-                "memory": 128
-            },
-            "limits": {
-                "cpu": 500,
-                "memory": 512
-            }
-        },
-        "input_schema": {
-            "properties": {
-                "input_image_path": {
-                    "description": "Path to the source image file or folder of images on disk.",
-                    "title": "Input image path",
-                    "type": "string"
-                },
-                "output_image_path": {
-                    "description": "Where to save the enhanced image(s) (parent folders are created if missing).",
-                    "title": "Output image path",
-                    "type": "string"
-                },
-                "factor": {
-                    "default": 1.0,
-                    "description": ">1.0 increases contrast, <1.0 decreases; 1.0 leaves the image unchanged.",
-                    "title": "Contrast factor",
-                    "type": "number"
+                "dy": {
+                    "default": 0,
+                    "description": "Vertical translation in pixels; positive moves down, negative moves up.",
+                    "title": "Offset Y (pixels)",
+                    "type": "integer"
                 }
             },
             "required": [
@@ -241,78 +175,7 @@
             "type": "object"
         },
         "secrets_schema": null,
-        "source_url": "https://github.com/IISAS/spice_image_classification_pieces/tree/main/pieces/ImageEnhanceContrastPiece"
-    },
-    "ImageToGrayPiece": {
-        "name": "ImageToGrayPiece",
-        "dependency": {
-            "dockerfile": "Dockerfile",
-            "requirements_file": null
-        },
-        "tags": [
-            "image",
-            "preprocessing",
-            "grayscale"
-        ],
-        "style": {
-            "node_label": "Convert to Grayscale",
-            "node_type": "default",
-            "node_style": {
-                "backgroundColor": "#ebebeb"
-            },
-            "useIcon": true,
-            "icon_class_name": "fa-duotone fa-droplet",
-            "iconStyle": {
-                "cursor": "pointer"
-            }
-        },
-        "description": "Piece to convert an image to grayscale and save the result.",
-        "container_resources": {
-            "requests": {
-                "cpu": 100,
-                "memory": 128
-            },
-            "limits": {
-                "cpu": 500,
-                "memory": 512
-            }
-        },
-        "input_schema": {
-            "properties": {
-                "input_image_path": {
-                    "description": "Path to the source image file or folder of images on disk.",
-                    "title": "Input image path",
-                    "type": "string"
-                },
-                "output_image_path": {
-                    "description": "Where to save the enhanced image(s) (parent folders are created if missing).",
-                    "title": "Output image path",
-                    "type": "string"
-                }
-            },
-            "required": [
-                "input_image_path",
-                "output_image_path"
-            ],
-            "title": "InputModel",
-            "type": "object"
-        },
-        "output_schema": {
-            "properties": {
-                "output_image_path": {
-                    "description": "Path to the saved output image.",
-                    "title": "Output image path",
-                    "type": "string"
-                }
-            },
-            "required": [
-                "output_image_path"
-            ],
-            "title": "OutputModel",
-            "type": "object"
-        },
-        "secrets_schema": null,
-        "source_url": "https://github.com/IISAS/spice_image_classification_pieces/tree/main/pieces/ImageToGrayPiece"
+        "source_url": "https://github.com/IISAS/spice_image_classification_pieces/tree/main/pieces/ImageOffsetPiece"
     },
     "ImageClassificationTrainPiece": {
         "name": "ImageClassificationTrainPiece",
@@ -492,30 +355,34 @@
         "secrets_schema": null,
         "source_url": "https://github.com/IISAS/spice_image_classification_pieces/tree/main/pieces/ImageClassificationTrainPiece"
     },
-    "ImageCropPiece": {
-        "name": "ImageCropPiece",
+    "ImageClassificationInferencePiece": {
+        "name": "ImageClassificationInferencePiece",
         "dependency": {
-            "dockerfile": "Dockerfile",
+            "dockerfile": "Dockerfile.tensorflow-gpu",
             "requirements_file": null
         },
         "tags": [
-            "image",
-            "preprocessing",
-            "crop"
+            "AI",
+            "Keras",
+            "Tensorflow",
+            "CNN",
+            "2D",
+            "classification",
+            "images"
         ],
         "style": {
-            "node_label": "Crop (L,T,R,B)",
+            "node_label": "Image Classification - 2D CNN (Inference)",
             "node_type": "default",
             "node_style": {
                 "backgroundColor": "#ebebeb"
             },
             "useIcon": true,
-            "icon_class_name": "fa-duotone fa-crop",
+            "icon_class_name": "fa-duotone fa-solid fa-right-to-bracket",
             "iconStyle": {
                 "cursor": "pointer"
             }
         },
-        "description": "Piece to crop an image to a fixed rectangle (left, top, right, bottom).",
+        "description": "Piece for inferencing an image classification model based on a 2D CNN architecture. The model is implemented in Keras.",
         "container_resources": {
             "requests": {
                 "cpu": 100,
@@ -524,71 +391,52 @@
             "limits": {
                 "cpu": 500,
                 "memory": 512
-            }
+            },
+            "use_gpu": true
         },
         "input_schema": {
+            "description": "ImageClassificationInferencePiece Input Model",
             "properties": {
-                "input_image_path": {
-                    "description": "Path to the source image file or folder of images on disk.",
-                    "title": "Input image path",
+                "saved_model_path": {
+                    "default": "",
+                    "description": "Path to the saved model directory.",
+                    "title": "saved model path",
                     "type": "string"
                 },
-                "output_image_path": {
-                    "description": "Where to save the enhanced image(s) (parent folders are created if missing).",
-                    "title": "Output image path",
+                "inference_data_path": {
+                    "default": "",
+                    "description": "Path to the inference data.",
+                    "title": "inference data path",
                     "type": "string"
-                },
-                "left": {
-                    "description": "Left coordinate (pixels) of the crop box (PIL format).",
-                    "title": "Left",
-                    "type": "integer"
-                },
-                "top": {
-                    "description": "Top coordinate (pixels) of the crop box (PIL format).",
-                    "title": "Top",
-                    "type": "integer"
-                },
-                "right": {
-                    "description": "Right coordinate (pixels, exclusive) of the crop box (PIL format).",
-                    "title": "Right",
-                    "type": "integer"
-                },
-                "bottom": {
-                    "description": "Bottom coordinate (pixels, exclusive) of the crop box (PIL format).",
-                    "title": "Bottom",
-                    "type": "integer"
                 }
             },
-            "required": [
-                "input_image_path",
-                "output_image_path",
-                "left",
-                "top",
-                "right",
-                "bottom"
-            ],
             "title": "InputModel",
             "type": "object"
         },
         "output_schema": {
+            "description": "ImageClassificationinferencePiece Output Model",
             "properties": {
-                "output_image_path": {
-                    "description": "Path to the saved output image.",
-                    "title": "Output image path",
-                    "type": "string"
+                "classification_results": {
+                    "description": "JSON of the classification results.",
+                    "items": {
+                        "additionalProperties": true,
+                        "type": "object"
+                    },
+                    "title": "Classification Results",
+                    "type": "array"
                 }
             },
             "required": [
-                "output_image_path"
+                "classification_results"
             ],
             "title": "OutputModel",
             "type": "object"
         },
         "secrets_schema": null,
-        "source_url": "https://github.com/IISAS/spice_image_classification_pieces/tree/main/pieces/ImageCropPiece"
+        "source_url": "https://github.com/IISAS/spice_image_classification_pieces/tree/main/pieces/ImageClassificationInferencePiece"
     },
-    "ImageOffsetPiece": {
-        "name": "ImageOffsetPiece",
+    "ImageToGrayPiece": {
+        "name": "ImageToGrayPiece",
         "dependency": {
             "dockerfile": "Dockerfile",
             "requirements_file": null
@@ -596,21 +444,21 @@
         "tags": [
             "image",
             "preprocessing",
-            "translate"
+            "grayscale"
         ],
         "style": {
-            "node_label": "Offset (dx, dy)",
+            "node_label": "Convert to Grayscale",
             "node_type": "default",
             "node_style": {
                 "backgroundColor": "#ebebeb"
             },
             "useIcon": true,
-            "icon_class_name": "fa-duotone fa-arrows-up-down-left-right",
+            "icon_class_name": "fa-duotone fa-droplet",
             "iconStyle": {
                 "cursor": "pointer"
             }
         },
-        "description": "Piece to translate an image by integer pixel offsets (dx, dy) and save the result.",
+        "description": "Piece to convert an image to grayscale and save the result.",
         "container_resources": {
             "requests": {
                 "cpu": 100,
@@ -632,18 +480,6 @@
                     "description": "Where to save the enhanced image(s) (parent folders are created if missing).",
                     "title": "Output image path",
                     "type": "string"
-                },
-                "dx": {
-                    "default": 0,
-                    "description": "Horizontal translation in pixels; positive moves right, negative moves left.",
-                    "title": "Offset X (pixels)",
-                    "type": "integer"
-                },
-                "dy": {
-                    "default": 0,
-                    "description": "Vertical translation in pixels; positive moves down, negative moves up.",
-                    "title": "Offset Y (pixels)",
-                    "type": "integer"
                 }
             },
             "required": [
@@ -668,7 +504,171 @@
             "type": "object"
         },
         "secrets_schema": null,
-        "source_url": "https://github.com/IISAS/spice_image_classification_pieces/tree/main/pieces/ImageOffsetPiece"
+        "source_url": "https://github.com/IISAS/spice_image_classification_pieces/tree/main/pieces/ImageToGrayPiece"
+    },
+    "ImageEnhanceContrastPiece": {
+        "name": "ImageEnhanceContrastPiece",
+        "dependency": {
+            "dockerfile": "Dockerfile",
+            "requirements_file": null
+        },
+        "tags": [
+            "AI",
+            "image",
+            "preprocessing",
+            "contrast"
+        ],
+        "style": {
+            "node_label": "Image Enhance Contrast",
+            "node_type": "default",
+            "node_style": {
+                "backgroundColor": "#ebebeb"
+            },
+            "useIcon": true,
+            "icon_class_name": "fa-duotone fa-solid fa-circle-half-stroke",
+            "iconStyle": {
+                "cursor": "pointer"
+            }
+        },
+        "description": "Piece to apply contrast enhancement to a single image and save the result.",
+        "container_resources": {
+            "requests": {
+                "cpu": 100,
+                "memory": 128
+            },
+            "limits": {
+                "cpu": 500,
+                "memory": 512
+            }
+        },
+        "input_schema": {
+            "properties": {
+                "input_image_path": {
+                    "description": "Path to the source image file or folder of images on disk.",
+                    "title": "Input image path",
+                    "type": "string"
+                },
+                "output_image_path": {
+                    "description": "Where to save the enhanced image(s) (parent folders are created if missing).",
+                    "title": "Output image path",
+                    "type": "string"
+                },
+                "factor": {
+                    "default": 1.0,
+                    "description": ">1.0 increases contrast, <1.0 decreases; 1.0 leaves the image unchanged.",
+                    "title": "Contrast factor",
+                    "type": "number"
+                }
+            },
+            "required": [
+                "input_image_path",
+                "output_image_path"
+            ],
+            "title": "InputModel",
+            "type": "object"
+        },
+        "output_schema": {
+            "properties": {
+                "output_image_path": {
+                    "description": "Path to the saved output image.",
+                    "title": "Output image path",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "output_image_path"
+            ],
+            "title": "OutputModel",
+            "type": "object"
+        },
+        "secrets_schema": null,
+        "source_url": "https://github.com/IISAS/spice_image_classification_pieces/tree/main/pieces/ImageEnhanceContrastPiece"
+    },
+    "ImageRotatePiece": {
+        "name": "ImageRotatePiece",
+        "dependency": {
+            "dockerfile": "Dockerfile",
+            "requirements_file": null
+        },
+        "tags": [
+            "image",
+            "preprocessing",
+            "rotate"
+        ],
+        "style": {
+            "node_label": "Rotate (0/90/180/270)",
+            "node_type": "default",
+            "node_style": {
+                "backgroundColor": "#ebebeb"
+            },
+            "useIcon": true,
+            "icon_class_name": "fa-duotone fa-rotate",
+            "iconStyle": {
+                "cursor": "pointer"
+            }
+        },
+        "description": "Piece to rotate an image by a discrete angle (0, 90, 180, 270) and save the result.",
+        "container_resources": {
+            "requests": {
+                "cpu": 100,
+                "memory": 128
+            },
+            "limits": {
+                "cpu": 500,
+                "memory": 512
+            }
+        },
+        "input_schema": {
+            "properties": {
+                "input_image_path": {
+                    "description": "Path to the source image file or folder of images on disk.",
+                    "title": "Input image path",
+                    "type": "string"
+                },
+                "output_image_path": {
+                    "description": "Folder where to save the enhanced image(s).",
+                    "title": "Output folder path",
+                    "type": "string"
+                },
+                "rotation": {
+                    "default": 0,
+                    "description": "Rotation angle in degrees; must be one of 0, 90, 180, 270 (counter-clockwise).",
+                    "items": {
+                        "enum": [
+                            0,
+                            90,
+                            180,
+                            270
+                        ],
+                        "type": "integer"
+                    },
+                    "title": "Rotation (degrees)",
+                    "type": "array"
+                }
+            },
+            "required": [
+                "input_image_path",
+                "output_image_path"
+            ],
+            "title": "InputModel",
+            "type": "object"
+        },
+        "output_schema": {
+            "properties": {
+                "output_image_path": {
+                    "description": "Path to the folder with saved output image(s).",
+                    "title": "Output folder path",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "output_image_path"
+            ],
+            "title": "OutputModel",
+            "type": "object"
+        },
+        "secrets_schema": null,
+        "source_url": "https://github.com/IISAS/spice_image_classification_pieces/tree/main/pieces/ImageRotatePiece"
     },
     "ImageEnhanceBrightnessPiece": {
         "name": "ImageEnhanceBrightnessPiece",

@@ -5,11 +5,11 @@
             "requirements_file": null
         },
         "pieces": [
-            "ImageRotatePiece",
-            "ImageEnhanceContrastPiece",
-            "ImageToGrayPiece",
             "ImageCropPiece",
             "ImageOffsetPiece",
+            "ImageToGrayPiece",
+            "ImageEnhanceContrastPiece",
+            "ImageRotatePiece",
             "ImageEnhanceBrightnessPiece"
         ],
         "secrets": [],
@@ -21,8 +21,8 @@
             "requirements_file": null
         },
         "pieces": [
-            "ImageClassificationInferencePiece",
-            "ImageClassificationTrainPiece"
+            "ImageClassificationTrainPiece",
+            "ImageClassificationInferencePiece"
         ],
         "secrets": [],
         "source_image": "ghcr.io/iisas/spice_image_classification_pieces:development-group1"
