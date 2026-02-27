@@ -3,8 +3,8 @@ from pathlib import Path
 
 from domino.testing import piece_dry_run
 from domino.testing.utils import skip_envs
-from tensorflow import keras
-from tensorflow.keras.layers import Conv2D
+import keras
+from keras.layers import Conv2D
 
 
 def run_piece(
