@@ -1,2 +1,1 @@
 -r requirements.txt
-tensorflow==2.20.0

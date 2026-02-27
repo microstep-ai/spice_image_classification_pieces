@@ -7,6 +7,7 @@ COPY .domino domino/pieces_repository/.domino
 
 COPY dependencies/requirements.txt domino/pieces_repository/dependencies/
 COPY dependencies/requirements-gpu.txt domino/pieces_repository/dependencies/
+
 RUN pip install --no-cache-dir -r domino/pieces_repository/dependencies/requirements-gpu.txt
 
 ENV PYTHONPATH="/home/domino/pieces_repository:${PYTHONPATH}"
