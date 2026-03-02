@@ -1,5 +1,8 @@
 /dry_run_results/
 /**/app.log
 /.venv/
-**/__pycache__/**
+__pycache__/
 /temp/
+/.idea/
+.coverage
+coverage.xml

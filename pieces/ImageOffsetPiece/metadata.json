@@ -1,7 +1,7 @@
 {
   "name": "ImageOffsetPiece",
   "description": "Piece to translate an image by integer pixel offsets (dx, dy) and save the result.",
-  "dependency": {"dockerfile": "Dockerfile_default"},
+  "dependency": {"dockerfile": "Dockerfile"},
   "container_resources": {
     "requests": {"cpu": 100, "memory": 128},
     "limits":   {"cpu": 500, "memory": 512}

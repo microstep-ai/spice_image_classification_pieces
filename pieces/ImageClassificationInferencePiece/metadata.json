@@ -2,8 +2,7 @@
     "name": "ImageClassificationInferencePiece",
     "description": "Piece for inferencing an image classification model based on a 2D CNN architecture. The model is implemented in Keras.",
     "dependency": {
-        "dockerfile": "Dockerfile_tensorflow-gpu",
-        "requirements_file": "requirements_tensorflow.txt"
+        "dockerfile": "Dockerfile.tensorflow-gpu"
     },
     "container_resources": {
         "requests": {
@@ -13,7 +12,8 @@
         "limits": {
             "cpu": 500,
             "memory": 512
-        }
+        },
+        "use_gpu": true
     },
     "tags": [
         "AI",
