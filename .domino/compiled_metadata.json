@@ -224,6 +224,11 @@
                     "title": "train data path",
                     "type": "string"
                 },
+                "model_output_path": {
+                    "description": "Path where the trained model folder will be saved.",
+                    "title": "model output path",
+                    "type": "string"
+                },
                 "validation_data_path": {
                     "anyOf": [
                         {
@@ -320,7 +325,8 @@
                 }
             },
             "required": [
-                "train_data_path"
+                "train_data_path",
+                "model_output_path"
             ],
             "title": "InputModel",
             "type": "object"
