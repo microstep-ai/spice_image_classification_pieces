@@ -13,6 +13,11 @@ class InputModel(BaseModel):
         description="Path to the train data.",
     )
 
+    model_output_path: str = Field(
+        title="model output path",
+        description="Path where the trained model folder will be saved.",
+    )
+
     validation_data_path: str | None = Field(
         title="validation data path",
         description="Path to the validation data if validation data is pre-split",

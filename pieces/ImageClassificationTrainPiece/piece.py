@@ -135,7 +135,10 @@ class ImageClassificationTrainPiece(BasePiece):
                 dropout_rate=input_data.dropout_rate
             )
 
-            best_model_file_path = os.path.join(Path(self.results_path), 'trained_model', 'best_model.keras')
+            trained_model_dir = os.path.join(input_data.model_output_path, 'trained_model')
+            os.makedirs(trained_model_dir, exist_ok=True)
+
+            best_model_file_path = os.path.join(trained_model_dir, 'best_model.keras')
             callbacks = [
                 keras.callbacks.ModelCheckpoint(
                     best_model_file_path, save_best_only=True, monitor="val_loss"
@@ -157,10 +160,10 @@ class ImageClassificationTrainPiece(BasePiece):
             )
             logger.info("Training finished")
 
-            last_model_file_path = os.path.join(Path(self.results_path), 'trained_model', 'last_model.keras')
+            last_model_file_path = os.path.join(trained_model_dir, 'last_model.keras')
             m.save(last_model_file_path)
 
-            config_path = os.path.join(self.results_path, 'trained_model', 'config.json')
+            config_path = os.path.join(trained_model_dir, 'config.json')
             with open(config_path, "w") as f:
                 cfg = dict(input_data)
                 cfg['class_mapping'] = {i: name for i, name in enumerate(class_names)}
@@ -176,7 +179,7 @@ class ImageClassificationTrainPiece(BasePiece):
             plt.xlabel("epoch", fontsize="large")
             plt.legend(["train", "val"], loc="best")
 
-            fig_path = os.path.join(Path(self.results_path), f"training_{metric}.png")
+            fig_path = os.path.join(trained_model_dir, f"training_{metric}.png")
             plt.savefig(fig_path, dpi=300, bbox_inches="tight")
             plt.close()
             logger.info(f"Training plot saved to {fig_path}")
