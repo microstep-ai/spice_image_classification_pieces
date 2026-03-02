@@ -9,6 +9,7 @@ from keras.layers import Conv2D
 
 def run_piece(
     train_data_path: str,
+    model_output_path: str,
     image_size: Tuple[int, int],
     validation_data_path: str | None,
     validation_split: float,
@@ -24,6 +25,7 @@ def run_piece(
         piece_name="ImageClassificationTrainPiece",
         input_data={
             'train_data_path': train_data_path,
+            'model_output_path': model_output_path,
             'image_size': image_size,
             'validation_data_path': validation_data_path,
             'validation_split': validation_split,
@@ -42,6 +44,7 @@ def run_piece(
 def test_ImageClassificationTrainPiece():
     piece_kwargs = {
         'train_data_path': str(Path('test_data')),
+        'model_output_path': str(Path('training_output')),
         'image_size': [256, 256],
         'validation_data_path': None,
         'validation_split': 0.2,
