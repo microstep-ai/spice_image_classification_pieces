@@ -1,0 +1,25 @@
+@startuml
+skinparam state {
+  BackgroundColor White
+  BorderColor Black
+  ArrowColor Black
+  FontName Helvetica
+}
+
+' Preprocessing + Inference pipeline using our Pieces
+[*] --> Brightness
+
+state "ImageEnhanceBrightnessPiece\n(factor=2.0)\n[src: Pieces/ImageEnhanceBrightnessPiece/piece.py]" as Brightness
+state "ImageEnhanceContrastPiece\n(factor=1.5)\n[src: Pieces/ImageEnhanceContrastPiece/piece.py]" as Contrast
+state "ImageCropPiece\n(L,T,R,B)=(140,60,500,420)\n[src: Pieces/ImageCropPiece/piece.py]" as Crop
+state "ImageToGrayPiece\n[src: Pieces/ImageToGrayPiece/piece.py]" as Gray
+state "ImageClassificationInferencePiece\n[src: Pieces/ImageClassificationInferencePiece/piece.py]" as Infer
+
+Brightness --> Contrast
+Contrast --> Crop
+Crop --> Gray
+Gray --> Infer
+
+Infer --> [*]
+
+@enduml

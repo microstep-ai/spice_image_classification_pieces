@@ -1,7 +1,7 @@
 from __future__ import annotations
 import os
 from typing import Tuple
-from PIL import Image
+from PIL import Image, ImageDraw
 
 
 def ensure_parent_dir(path: str) -> None:
@@ -54,6 +54,43 @@ def clamp_crop_box(left: int, top: int, right: int, bottom: int, width: int, hei
     r = max(r, l + 1)
     b = max(b, t + 1)
     return l, t, r, b
+
+
+def validate_crop_box(left: int, top: int, right: int, bottom: int, width: int, height: int) -> tuple[int, int, int, int]:
+    """Validate that a crop box fits fully inside image bounds."""
+    left = int(left)
+    top = int(top)
+    right = int(right)
+    bottom = int(bottom)
+
+    if left < 0 or top < 0:
+        raise ValueError("Crop box coordinates must be non-negative.")
+    if right <= left or bottom <= top:
+        raise ValueError("Crop box must define a non-empty rectangle.")
+    if width < right or height < bottom:
+        raise ValueError(
+            f"Image too small for fixed crop box {(left, top, right, bottom)}: got size {(width, height)}"
+        )
+
+    return left, top, right, bottom
+
+
+def apply_inscribed_circle_mask(img: Image.Image, background: tuple[int, int, int] = (0, 0, 0)) -> Image.Image:
+    """Keep only the centered inscribed circle; pixels outside are set to background."""
+    img = img.convert("RGB")
+    width, height = img.size
+    diameter = min(width, height)
+    left = (width - diameter) / 2
+    top = (height - diameter) / 2
+    right = left + diameter
+    bottom = top + diameter
+
+    mask = Image.new("L", (width, height), 0)
+    draw = ImageDraw.Draw(mask)
+    draw.ellipse((left, top, right, bottom), fill=255)
+
+    bg = Image.new("RGB", (width, height), background)
+    return Image.composite(img, bg, mask)
 
 
 def translate_image(img: Image.Image, dx: int, dy: int, fill: int | Tuple[int, int, int] = 0) -> Image.Image:

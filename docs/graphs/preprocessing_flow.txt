@@ -1,0 +1,44 @@
+@startuml
+skinparam state {
+  BackgroundColor White
+  BorderColor Black
+  ArrowColor Black
+  FontName Helvetica
+}
+
+' Simple preprocessing pipeline using our Pieces
+[*] --> Brightness
+
+state "ImageEnhanceBrightnessPiece\n(factor=2.0)\n[src: Pieces/ImageEnhanceBrightnessPiece/piece.py]" as Brightness
+state "ImageEnhanceContrastPiece\n(factor=1.5)\n[src: Pieces/ImageEnhanceContrastPiece/piece.py]" as Contrast
+state "ImageRotatePiece\n(rotation=90)\n[src: Pieces/ImageRotatePiece/piece.py]" as Rot90
+state "ImageRotatePiece\n(rotation=180)\n[src: Pieces/ImageRotatePiece/piece.py]" as Rot180
+state "ImageOffsetPiece\n(dx=0, dy=15)\n[src: Pieces/ImageOffsetPiece/piece.py]" as Offset180
+state "ImageRotatePiece\n(rotation=270)\n[src: Pieces/ImageRotatePiece/piece.py]" as Rot270
+state "ImageOffsetPiece\n(dx=-15, dy=0)\n[src: Pieces/ImageOffsetPiece/piece.py]" as Offset270
+state "ImageCropPiece\n(L,T,R,B)=(140,60,500,420)\n[src: Pieces/ImageCropPiece/piece.py]" as Crop
+state "ImageToGrayPiece\n[src: Pieces/ImageToGrayPiece/piece.py]" as Gray
+
+' Flow
+Brightness --> Contrast
+
+' Branch by rotation
+Contrast --> Rot90 : 90°
+Contrast --> Rot180 : 180°
+Contrast --> Rot270 : 270°
+Contrast --> Crop : 0°
+
+' Within branches
+Rot180 --> Offset180
+Rot270 --> Offset270
+
+' Merge branches to Crop
+Rot90 --> Crop
+Offset180 --> Crop
+Offset270 --> Crop
+
+' Finalize
+Crop --> Gray
+Gray --> [*]
+
+@enduml

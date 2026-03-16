@@ -1,0 +1,14 @@
+{
+  "name": "SiameseImageSimilarityTrainPiece",
+  "description": "Piece for training a Siamese image similarity model with fixed crop, circular masking, and same-vs-different pair generation.",
+  "dependency": {"dockerfile": "Dockerfile"},
+  "container_resources": {
+    "requests": {"cpu": 200, "memory": 512},
+    "limits": {"cpu": 1000, "memory": 2048}
+  },
+  "tags": ["AI", "PyTorch", "Siamese", "similarity", "images"],
+  "style": {
+    "node_label": "Siamese Image Similarity (Train)",
+    "icon_class_name": "fa-duotone fa-network-wired"
+  }
+}
