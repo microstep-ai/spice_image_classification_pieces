@@ -92,7 +92,7 @@
             "type": "object"
         },
         "secrets_schema": null,
-        "source_url": "https://github.com/IISAS/spice_image_classification_pieces/tree/main/pieces/ImageCropPiece"
+        "source_url": "https://github.com/microstep-ai/spice_image_classification_pieces/tree/main/pieces/ImageCropPiece"
     },
     "ImageOffsetPiece": {
         "name": "ImageOffsetPiece",
@@ -175,7 +175,7 @@
             "type": "object"
         },
         "secrets_schema": null,
-        "source_url": "https://github.com/IISAS/spice_image_classification_pieces/tree/main/pieces/ImageOffsetPiece"
+        "source_url": "https://github.com/microstep-ai/spice_image_classification_pieces/tree/main/pieces/ImageOffsetPiece"
     },
     "ImageClassificationTrainPiece": {
         "name": "ImageClassificationTrainPiece",
@@ -359,7 +359,7 @@
             "type": "object"
         },
         "secrets_schema": null,
-        "source_url": "https://github.com/IISAS/spice_image_classification_pieces/tree/main/pieces/ImageClassificationTrainPiece"
+        "source_url": "https://github.com/microstep-ai/spice_image_classification_pieces/tree/main/pieces/ImageClassificationTrainPiece"
     },
     "ImageClassificationInferencePiece": {
         "name": "ImageClassificationInferencePiece",
@@ -439,7 +439,7 @@
             "type": "object"
         },
         "secrets_schema": null,
-        "source_url": "https://github.com/IISAS/spice_image_classification_pieces/tree/main/pieces/ImageClassificationInferencePiece"
+        "source_url": "https://github.com/microstep-ai/spice_image_classification_pieces/tree/main/pieces/ImageClassificationInferencePiece"
     },
     "ImageToGrayPiece": {
         "name": "ImageToGrayPiece",
@@ -510,7 +510,7 @@
             "type": "object"
         },
         "secrets_schema": null,
-        "source_url": "https://github.com/IISAS/spice_image_classification_pieces/tree/main/pieces/ImageToGrayPiece"
+        "source_url": "https://github.com/microstep-ai/spice_image_classification_pieces/tree/main/pieces/ImageToGrayPiece"
     },
     "ImageEnhanceContrastPiece": {
         "name": "ImageEnhanceContrastPiece",
@@ -588,7 +588,7 @@
             "type": "object"
         },
         "secrets_schema": null,
-        "source_url": "https://github.com/IISAS/spice_image_classification_pieces/tree/main/pieces/ImageEnhanceContrastPiece"
+        "source_url": "https://github.com/microstep-ai/spice_image_classification_pieces/tree/main/pieces/ImageEnhanceContrastPiece"
     },
     "ImageRotatePiece": {
         "name": "ImageRotatePiece",
@@ -674,7 +674,7 @@
             "type": "object"
         },
         "secrets_schema": null,
-        "source_url": "https://github.com/IISAS/spice_image_classification_pieces/tree/main/pieces/ImageRotatePiece"
+        "source_url": "https://github.com/microstep-ai/spice_image_classification_pieces/tree/main/pieces/ImageRotatePiece"
     },
     "ImageEnhanceBrightnessPiece": {
         "name": "ImageEnhanceBrightnessPiece",
@@ -752,6 +752,6 @@
             "type": "object"
         },
         "secrets_schema": null,
-        "source_url": "https://github.com/IISAS/spice_image_classification_pieces/tree/main/pieces/ImageEnhanceBrightnessPiece"
+        "source_url": "https://github.com/microstep-ai/spice_image_classification_pieces/tree/main/pieces/ImageEnhanceBrightnessPiece"
     }
 }
