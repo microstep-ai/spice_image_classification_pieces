@@ -7,13 +7,15 @@
         "pieces": [
             "ImageCropPiece",
             "ImageOffsetPiece",
+            "SiameseImageSimilarityTrainPiece",
             "ImageToGrayPiece",
             "ImageEnhanceContrastPiece",
             "ImageRotatePiece",
+            "ImageCircularCropPiece",
             "ImageEnhanceBrightnessPiece"
         ],
         "secrets": [],
-        "source_image": "ghcr.io/iisas/spice_image_classification_pieces:1.1.6-group0"
+        "source_image": "ghcr.io/iisas/spice_image_classification_pieces:1.1.8-group0"
     },
     "group1": {
         "dependency": {
@@ -25,6 +27,6 @@
             "ImageClassificationInferencePiece"
         ],
         "secrets": [],
-        "source_image": "ghcr.io/iisas/spice_image_classification_pieces:1.1.6-group1"
+        "source_image": "ghcr.io/iisas/spice_image_classification_pieces:1.1.8-group1"
     }
 }
