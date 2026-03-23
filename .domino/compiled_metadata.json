@@ -441,6 +441,214 @@
         "secrets_schema": null,
         "source_url": "https://github.com/microstep-ai/spice_image_classification_pieces/tree/main/pieces/ImageClassificationInferencePiece"
     },
+    "SiameseImageSimilarityTrainPiece": {
+        "name": "SiameseImageSimilarityTrainPiece",
+        "dependency": {
+            "dockerfile": "Dockerfile",
+            "requirements_file": null
+        },
+        "tags": [
+            "AI",
+            "PyTorch",
+            "Siamese",
+            "similarity",
+            "images"
+        ],
+        "style": {
+            "node_label": "Siamese Image Similarity (Train)",
+            "node_type": "default",
+            "node_style": {
+                "backgroundColor": "#ebebeb"
+            },
+            "useIcon": true,
+            "icon_class_name": "fa-duotone fa-network-wired",
+            "iconStyle": {
+                "cursor": "pointer"
+            }
+        },
+        "description": "Piece for training a Siamese image similarity model with fixed crop, circular masking, and same-vs-different pair generation.",
+        "container_resources": {
+            "requests": {
+                "cpu": 200,
+                "memory": 512
+            },
+            "limits": {
+                "cpu": 1000,
+                "memory": 2048
+            }
+        },
+        "input_schema": {
+            "properties": {
+                "train_data_path": {
+                    "description": "Path to a folder containing training images. Each filename must be unique.",
+                    "title": "Train data path",
+                    "type": "string"
+                },
+                "model_output_path": {
+                    "description": "Path where the trained model artifacts will be saved.",
+                    "title": "Model output path",
+                    "type": "string"
+                },
+                "train_ratio": {
+                    "default": 0.8,
+                    "description": "Fraction of images used for training; the remainder is used for validation.",
+                    "title": "Train ratio",
+                    "type": "number"
+                },
+                "crop_left": {
+                    "default": 122,
+                    "title": "Crop left",
+                    "type": "integer"
+                },
+                "crop_top": {
+                    "default": 32,
+                    "title": "Crop top",
+                    "type": "integer"
+                },
+                "crop_right": {
+                    "default": 538,
+                    "title": "Crop right",
+                    "type": "integer"
+                },
+                "crop_bottom": {
+                    "default": 448,
+                    "title": "Crop bottom",
+                    "type": "integer"
+                },
+                "image_size": {
+                    "default": 224,
+                    "description": "Square image size after resize.",
+                    "title": "Image size",
+                    "type": "integer"
+                },
+                "circle_background_color": {
+                    "default": [
+                        0,
+                        0,
+                        0
+                    ],
+                    "description": "RGB color used outside the inscribed circle.",
+                    "items": {
+                        "type": "integer"
+                    },
+                    "maxItems": 3,
+                    "minItems": 3,
+                    "title": "Circle background color",
+                    "type": "array"
+                },
+                "cardinal_gap_deg": {
+                    "default": 2.0,
+                    "description": "Excluded angular gap around 0, 90, 180, 270 degrees.",
+                    "title": "Cardinal gap",
+                    "type": "number"
+                },
+                "train_pairs_per_epoch": {
+                    "default": 4000,
+                    "title": "Train pairs per epoch",
+                    "type": "integer"
+                },
+                "val_pairs_per_epoch": {
+                    "default": 1000,
+                    "title": "Validation pairs per epoch",
+                    "type": "integer"
+                },
+                "positive_prob": {
+                    "default": 0.5,
+                    "title": "Positive pair probability",
+                    "type": "number"
+                },
+                "backbone": {
+                    "default": "resnet18",
+                    "enum": [
+                        "resnet18",
+                        "resnet50"
+                    ],
+                    "title": "Backbone",
+                    "type": "string"
+                },
+                "embedding_dim": {
+                    "default": 128,
+                    "title": "Embedding dimension",
+                    "type": "integer"
+                },
+                "batch_size": {
+                    "default": 32,
+                    "title": "Batch size",
+                    "type": "integer"
+                },
+                "epochs": {
+                    "default": 10,
+                    "title": "Epochs",
+                    "type": "integer"
+                },
+                "learning_rate": {
+                    "default": 0.0001,
+                    "title": "Learning rate",
+                    "type": "number"
+                },
+                "weight_decay": {
+                    "default": 0.0001,
+                    "title": "Weight decay",
+                    "type": "number"
+                },
+                "cosine_margin": {
+                    "default": 0.2,
+                    "title": "Cosine margin",
+                    "type": "number"
+                },
+                "cosine_threshold": {
+                    "default": 0.75,
+                    "title": "Cosine threshold",
+                    "type": "number"
+                },
+                "random_seed": {
+                    "default": 42,
+                    "title": "Random seed",
+                    "type": "integer"
+                }
+            },
+            "required": [
+                "train_data_path",
+                "model_output_path"
+            ],
+            "title": "InputModel",
+            "type": "object"
+        },
+        "output_schema": {
+            "properties": {
+                "best_model_file_path": {
+                    "description": "Path to the best model checkpoint.",
+                    "title": "Best Model File Path",
+                    "type": "string"
+                },
+                "last_model_file_path": {
+                    "description": "Path to the final model checkpoint.",
+                    "title": "Last Model File Path",
+                    "type": "string"
+                },
+                "config_path": {
+                    "description": "Path to the saved configuration JSON.",
+                    "title": "Config Path",
+                    "type": "string"
+                },
+                "training_plot_file_path": {
+                    "description": "Path to the saved training plot.",
+                    "title": "Training Plot File Path",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "best_model_file_path",
+                "last_model_file_path",
+                "config_path",
+                "training_plot_file_path"
+            ],
+            "title": "OutputModel",
+            "type": "object"
+        },
+        "secrets_schema": null,
+        "source_url": "https://github.com/microstep-ai/spice_image_classification_pieces/tree/main/pieces/SiameseImageSimilarityTrainPiece"
+    },
     "ImageToGrayPiece": {
         "name": "ImageToGrayPiece",
         "dependency": {
@@ -675,6 +883,118 @@
         },
         "secrets_schema": null,
         "source_url": "https://github.com/microstep-ai/spice_image_classification_pieces/tree/main/pieces/ImageRotatePiece"
+    },
+    "ImageCircularCropPiece": {
+        "name": "ImageCircularCropPiece",
+        "dependency": {
+            "dockerfile": "Dockerfile",
+            "requirements_file": null
+        },
+        "tags": [
+            "image",
+            "preprocessing",
+            "crop",
+            "mask",
+            "circle"
+        ],
+        "style": {
+            "node_label": "Circular Crop",
+            "node_type": "default",
+            "node_style": {
+                "backgroundColor": "#ebebeb"
+            },
+            "useIcon": true,
+            "icon_class_name": "fa-duotone fa-circle",
+            "iconStyle": {
+                "cursor": "pointer"
+            }
+        },
+        "description": "Piece to crop an image to a fixed rectangle and keep only the centered inscribed circle.",
+        "container_resources": {
+            "requests": {
+                "cpu": 100,
+                "memory": 128
+            },
+            "limits": {
+                "cpu": 500,
+                "memory": 512
+            }
+        },
+        "input_schema": {
+            "properties": {
+                "input_image_path": {
+                    "description": "Path to the source image file or folder of images on disk.",
+                    "title": "Input image path",
+                    "type": "string"
+                },
+                "output_image_path": {
+                    "description": "Where to save the processed image(s).",
+                    "title": "Output image path",
+                    "type": "string"
+                },
+                "left": {
+                    "description": "Left coordinate (pixels) of the crop box.",
+                    "title": "Left",
+                    "type": "integer"
+                },
+                "top": {
+                    "description": "Top coordinate (pixels) of the crop box.",
+                    "title": "Top",
+                    "type": "integer"
+                },
+                "right": {
+                    "description": "Right coordinate (pixels, exclusive) of the crop box.",
+                    "title": "Right",
+                    "type": "integer"
+                },
+                "bottom": {
+                    "description": "Bottom coordinate (pixels, exclusive) of the crop box.",
+                    "title": "Bottom",
+                    "type": "integer"
+                },
+                "background_color": {
+                    "default": [
+                        0,
+                        0,
+                        0
+                    ],
+                    "description": "RGB color used outside the inscribed circle.",
+                    "items": {
+                        "type": "integer"
+                    },
+                    "maxItems": 3,
+                    "minItems": 3,
+                    "title": "Background color",
+                    "type": "array"
+                }
+            },
+            "required": [
+                "input_image_path",
+                "output_image_path",
+                "left",
+                "top",
+                "right",
+                "bottom"
+            ],
+            "title": "InputModel",
+            "type": "object"
+        },
+        "output_schema": {
+            "properties": {
+                "output_image_path": {
+                    "description": "Path to the saved output image(s).",
+                    "title": "Output image path",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "output_image_path"
+            ],
+            "title": "OutputModel",
+            "type": "object"
+        },
+        "secrets_schema": null,
+        "source_url": "https://github.com/microstep-ai/spice_image_classification_pieces/tree/main/pieces/ImageCircularCropPiece"
     },
     "ImageEnhanceBrightnessPiece": {
         "name": "ImageEnhanceBrightnessPiece",
