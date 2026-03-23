@@ -26,13 +26,6 @@ class InputModel(BaseModel):
         title="Bottom",
         description="Bottom coordinate (pixels, exclusive) of the crop box."
     )
-    background_color: list[int] = Field(
-        title="Background color",
-        description="RGB color used outside the inscribed circle.",
-        default=[0, 0, 0],
-        min_length=3,
-        max_length=3,
-    )
 
 
 class OutputModel(BaseModel):
