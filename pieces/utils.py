@@ -1,110 +1,102 @@
 from __future__ import annotations
 import os
-import logging
 from typing import Tuple
 from PIL import Image, ImageDraw
-
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
-    datefmt="%Y-%m-%d %H:%M:%S",
-    handlers=[]
-)
-logger = logging.getLogger(__name__)
 
 
 def ensure_parent_dir(path: str) -> None:
     """Create the parent directory for a file path if it doesn't exist."""
     try:
-        logger.info(f"ensure_parent_dir called with path={path}")
+        print(f"[ensure_parent_dir] path={path}")
         parent = os.path.dirname(path) or "."
         os.makedirs(parent, exist_ok=True)
-        logger.info(f"Parent directory ensured: {parent}")
-    except Exception:
-        logger.exception("Error in ensure_parent_dir")
+        print(f"[ensure_parent_dir] parent created/exists: {parent}")
+    except Exception as e:
+        print(f"[ERROR] ensure_parent_dir failed: {e}")
         raise
 
 
 def open_image(path: str) -> Image.Image:
     """Open an image from disk (lazy-loaded PIL Image)."""
     try:
-        logger.info(f"open_image called with path={path}")
+        print(f"[open_image] path={path}")
         img = Image.open(path)
-        logger.info(f"Image opened successfully: mode={img.mode}, size={img.size}")
+        print(f"[open_image] opened successfully, mode={img.mode}, size={img.size}")
         return img
-    except Exception:
-        logger.exception(f"Error in open_image for path={path}")
+    except Exception as e:
+        print(f"[ERROR] open_image failed for path={path}: {e}")
         raise
 
 
 def open_image_rgb(path: str) -> Image.Image:
     """Open an image and normalize to RGB (drops alpha, converts other modes)."""
     try:
-        logger.info(f"open_image_rgb called with path={path}")
+        print(f"[open_image_rgb] path={path}")
         img = Image.open(path)
-        logger.info(f"Original image opened: mode={img.mode}, size={img.size}")
+        print(f"[open_image_rgb] original mode={img.mode}, size={img.size}")
 
         if img.mode != "RGB":
+            print(f"[open_image_rgb] converting image from {img.mode} to RGB")
             img = img.convert("RGB")
-            logger.info("Image converted to RGB")
 
+        print(f"[open_image_rgb] returning mode={img.mode}, size={img.size}")
         return img
-    except Exception:
-        logger.exception(f"Error in open_image_rgb for path={path}")
+    except Exception as e:
+        print(f"[ERROR] open_image_rgb failed for path={path}: {e}")
         raise
 
 
 def save_image(path: str, img: Image.Image) -> None:
     """Save an image to disk, creating parent folders if needed."""
     try:
-        logger.info(f"save_image called with path={path}, mode={img.mode}, size={img.size}")
+        print(f"[save_image] path={path}, mode={img.mode}, size={img.size}")
         ensure_parent_dir(path)
         img.save(path)
-        logger.info(f"Image saved successfully to {path}")
-    except Exception:
-        logger.exception(f"Error in save_image for path={path}")
+        print(f"[save_image] saved successfully to {path}")
+    except Exception as e:
+        print(f"[ERROR] save_image failed for path={path}: {e}")
         raise
 
 
 def save_image_rgb(path: str, img: Image.Image) -> None:
     """Save an image as true RGB (3 channels), creating parent folders if needed."""
     try:
-        logger.info(f"save_image_rgb called with path={path}, mode={img.mode}, size={img.size}")
+        print(f"[save_image_rgb] path={path}, mode={img.mode}, size={img.size}")
         ensure_parent_dir(path)
 
         if img.mode != "RGB":
+            print(f"[save_image_rgb] converting image from {img.mode} to RGB before saving")
             img = img.convert("RGB")
-            logger.info("Image converted to RGB before saving")
 
         img.save(path)
-        logger.info(f"RGB image saved successfully to {path}")
-    except Exception:
-        logger.exception(f"Error in save_image_rgb for path={path}")
+        print(f"[save_image_rgb] saved successfully to {path}")
+    except Exception as e:
+        print(f"[ERROR] save_image_rgb failed for path={path}: {e}")
         raise
 
 
 def save_image_gray(path: str, img: Image.Image) -> None:
     """Save an image as true grayscale (mode 'L'), creating parent folders if needed."""
     try:
-        logger.info(f"save_image_gray called with path={path}, mode={img.mode}, size={img.size}")
+        print(f"[save_image_gray] path={path}, mode={img.mode}, size={img.size}")
         ensure_parent_dir(path)
 
         if img.mode != "L":
+            print(f"[save_image_gray] converting image from {img.mode} to L before saving")
             img = img.convert("L")
-            logger.info("Image converted to grayscale (L) before saving")
 
         img.save(path)
-        logger.info(f"Grayscale image saved successfully to {path}")
-    except Exception:
-        logger.exception(f"Error in save_image_gray for path={path}")
+        print(f"[save_image_gray] saved successfully to {path}")
+    except Exception as e:
+        print(f"[ERROR] save_image_gray failed for path={path}: {e}")
         raise
 
 
 def clamp_crop_box(left: int, top: int, right: int, bottom: int, width: int, height: int) -> Tuple[int, int, int, int]:
     """Clamp a crop box to image bounds and enforce non-empty rectangle."""
     try:
-        logger.info(
-            f"clamp_crop_box called with left={left}, top={top}, right={right}, "
+        print(
+            f"[clamp_crop_box] input: left={left}, top={top}, right={right}, "
             f"bottom={bottom}, width={width}, height={height}"
         )
 
@@ -115,18 +107,18 @@ def clamp_crop_box(left: int, top: int, right: int, bottom: int, width: int, hei
         r = max(r, l + 1)
         b = max(b, t + 1)
 
-        logger.info(f"Clamped crop box: {(l, t, r, b)}")
+        print(f"[clamp_crop_box] output: {(l, t, r, b)}")
         return l, t, r, b
-    except Exception:
-        logger.exception("Error in clamp_crop_box")
+    except Exception as e:
+        print(f"[ERROR] clamp_crop_box failed: {e}")
         raise
 
 
 def validate_crop_box(left: int, top: int, right: int, bottom: int, width: int, height: int) -> tuple[int, int, int, int]:
     """Validate that a crop box fits fully inside image bounds."""
     try:
-        logger.info(
-            f"validate_crop_box called with left={left}, top={top}, right={right}, "
+        print(
+            f"[validate_crop_box] input: left={left}, top={top}, right={right}, "
             f"bottom={bottom}, width={width}, height={height}"
         )
 
@@ -134,6 +126,11 @@ def validate_crop_box(left: int, top: int, right: int, bottom: int, width: int, 
         top = int(top)
         right = int(right)
         bottom = int(bottom)
+
+        print(
+            f"[validate_crop_box] converted to int: left={left}, top={top}, "
+            f"right={right}, bottom={bottom}"
+        )
 
         if left < 0 or top < 0:
             raise ValueError("Crop box coordinates must be non-negative.")
@@ -144,19 +141,17 @@ def validate_crop_box(left: int, top: int, right: int, bottom: int, width: int, 
                 f"Image too small for fixed crop box {(left, top, right, bottom)}: got size {(width, height)}"
             )
 
-        logger.info(f"Crop box validated successfully: {(left, top, right, bottom)}")
+        print(f"[validate_crop_box] valid crop box: {(left, top, right, bottom)}")
         return left, top, right, bottom
-    except Exception:
-        logger.exception("Error in validate_crop_box")
+    except Exception as e:
+        print(f"[ERROR] validate_crop_box failed: {e}")
         raise
 
 
 def apply_inscribed_circle_mask(img: Image.Image, background: tuple[int, int, int] = (0, 0, 0)) -> Image.Image:
     """Keep only the centered inscribed circle; pixels outside are set to background."""
     try:
-        logger.info(
-            f"apply_inscribed_circle_mask called with mode={img.mode}, size={img.size}, background={background}"
-        )
+        print(f"[apply_inscribed_circle_mask] input mode={img.mode}, size={img.size}, background={background}")
 
         img = img.convert("RGB")
         width, height = img.size
@@ -166,8 +161,9 @@ def apply_inscribed_circle_mask(img: Image.Image, background: tuple[int, int, in
         right = left + diameter
         bottom = top + diameter
 
-        logger.info(
-            f"Calculated circle bounds: left={left}, top={top}, right={right}, bottom={bottom}, diameter={diameter}"
+        print(
+            f"[apply_inscribed_circle_mask] circle bounds: "
+            f"left={left}, top={top}, right={right}, bottom={bottom}, diameter={diameter}"
         )
 
         mask = Image.new("L", (width, height), 0)
@@ -177,10 +173,10 @@ def apply_inscribed_circle_mask(img: Image.Image, background: tuple[int, int, in
         bg = Image.new("RGB", (width, height), background)
         result = Image.composite(img, bg, mask)
 
-        logger.info("Circle mask applied successfully")
+        print("[apply_inscribed_circle_mask] mask applied successfully")
         return result
-    except Exception:
-        logger.exception("Error in apply_inscribed_circle_mask")
+    except Exception as e:
+        print(f"[ERROR] apply_inscribed_circle_mask failed: {e}")
         raise
 
 
@@ -189,15 +185,13 @@ def translate_image(img: Image.Image, dx: int, dy: int, fill: int | Tuple[int, i
     Works for RGB and L modes.
     """
     try:
-        logger.info(
-            f"translate_image called with mode={img.mode}, size={img.size}, dx={dx}, dy={dy}, fill={fill}"
-        )
+        print(f"[translate_image] mode={img.mode}, size={img.size}, dx={dx}, dy={dy}, fill={fill}")
 
         bg = Image.new(img.mode, img.size, color=fill)
         bg.paste(img, (dx, dy))
 
-        logger.info("Image translated successfully")
+        print("[translate_image] translated successfully")
         return bg
-    except Exception:
-        logger.exception("Error in translate_image")
+    except Exception as e:
+        print(f"[ERROR] translate_image failed: {e}")
         raise

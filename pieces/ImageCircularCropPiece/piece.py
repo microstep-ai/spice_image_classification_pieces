@@ -17,27 +17,29 @@ try:
     except ImportError:  # pragma: no cover
         from pieces.utils import open_image_rgb, save_image_rgb, validate_crop_box, apply_inscribed_circle_mask
 except Exception as e:
-    logger.exception(f"Could not import utils.py: {e}")
+    print(f"[ERROR] Could not import utils.py: {e}")
     raise
 
 
 class ImageCircularCropPiece(ImageBasePiece):
     def process_image(self, file_path, output_path, input_data: InputModel):
         try:
-            logger.info("Starting process_image")
-            logger.info(f"file_path={file_path}, output_path={output_path}")
-            logger.info(
+            print("Starting process_image")
+            print(f"file_path={file_path}, output_path={output_path}")
+            print(
                 f"input_data: left={input_data.left}, top={input_data.top}, "
                 f"right={input_data.right}, bottom={input_data.bottom}, "
                 f"background_color={input_data.background_color}"
             )
 
+            print("Opening image...")
             img = open_image_rgb(file_path)
-            logger.info("Image opened successfully")
+            print("Image opened successfully")
 
             width, height = img.size
-            logger.info(f"Image size: width={width}, height={height}")
+            print(f"Image size: width={width}, height={height}")
 
+            print("Validating crop box...")
             left, top, right, bottom = validate_crop_box(
                 input_data.left,
                 input_data.top,
@@ -46,32 +48,35 @@ class ImageCircularCropPiece(ImageBasePiece):
                 width,
                 height,
             )
-            logger.info(
-                f"Validated crop box: left={left}, top={top}, right={right}, bottom={bottom}"
-            )
+            print(f"Validated crop box: left={left}, top={top}, right={right}, bottom={bottom}")
 
+            print("Cropping image...")
             cropped = img.crop((left, top, right, bottom))
-            logger.info("Image cropped successfully")
+            print("Image cropped successfully")
 
+            print("Parsing background color...")
             background_color = tuple(int(value) for value in input_data.background_color)
-            logger.info(f"Background color parsed: {background_color}")
+            print(f"Background color parsed: {background_color}")
 
+            print("Applying circle mask...")
             output_image = apply_inscribed_circle_mask(
                 cropped,
                 background=background_color
             )
-            logger.info("Circle mask applied successfully")
+            print("Circle mask applied successfully")
 
+            print("Saving output image...")
             save_image_rgb(output_path, output_image)
-            logger.info(f"Output image saved successfully to {output_path}")
+            print(f"Output image saved successfully to {output_path}")
 
         except Exception as e:
-            logger.exception("Error in process_image")
+            print(f"[ERROR] Error in process_image: {e}")
             raise
 
     def return_output_model(self, input_data):
         try:
+            print("Creating output model...")
             return OutputModel(output_image_path=input_data.output_image_path)
         except Exception as e:
-            logger.exception("Error in return_output_model")
+            print(f"[ERROR] Error in return_output_model: {e}")
             raise
