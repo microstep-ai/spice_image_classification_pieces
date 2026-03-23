@@ -893,9 +893,7 @@
         "tags": [
             "image",
             "preprocessing",
-            "crop",
-            "mask",
-            "circle"
+            "crop"
         ],
         "style": {
             "node_label": "Circular Crop",
@@ -904,7 +902,7 @@
                 "backgroundColor": "#ebebeb"
             },
             "useIcon": true,
-            "icon_class_name": "fa-duotone fa-circle",
+            "icon_class_name": "fa-duotone fa-crop",
             "iconStyle": {
                 "cursor": "pointer"
             }
@@ -951,21 +949,6 @@
                     "description": "Bottom coordinate (pixels, exclusive) of the crop box.",
                     "title": "Bottom",
                     "type": "integer"
-                },
-                "background_color": {
-                    "default": [
-                        0,
-                        0,
-                        0
-                    ],
-                    "description": "RGB color used outside the inscribed circle.",
-                    "items": {
-                        "type": "integer"
-                    },
-                    "maxItems": 3,
-                    "minItems": 3,
-                    "title": "Background color",
-                    "type": "array"
                 }
             },
             "required": [
